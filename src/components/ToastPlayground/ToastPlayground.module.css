@@ -68,16 +68,17 @@
   border-bottom: 1px dotted hsl(250deg 80% 80% / 0.5);
   margin-bottom: 16px;
 }
+
 .titleMessageRow {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 16px;
 }
+
 .titleMessageRow:not(:last-of-type) {
   margin-bottom: 16px;
 }
-
 .label {
   flex-basis: 160px;
   text-align: right;
