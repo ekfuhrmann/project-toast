@@ -3,13 +3,25 @@ import React from "react";
 import Button from "../Button";
 
 import styles from "./ToastPlayground.module.css";
-import InputRadio from "../InputRadio/InputRadio";
+import InputRadio from "../InputRadio";
+import ToastShelf from "../ToastShelf";
+import { ToastContext } from "../ToastProvider";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 function ToastPlayground() {
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
   const [message, setMessage] = React.useState("");
+
+  const { createToast } = React.useContext(ToastContext);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    createToast(message, variant);
+
+    setMessage("");
+    setVariant(VARIANT_OPTIONS[0]);
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -18,7 +30,9 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <div className={styles.controlsWrapper}>
+      <ToastShelf />
+
+      <form className={styles.controlsWrapper} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -38,7 +52,9 @@ function ToastPlayground() {
         </div>
 
         <div className={styles.row}>
-          <div className={styles.label}>Variant</div>
+          <div className={styles.label} id="toast-variant">
+            Variant
+          </div>
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
             {VARIANT_OPTIONS.map((option) => (
               <InputRadio
@@ -47,6 +63,7 @@ function ToastPlayground() {
                 key={`variant-${option}`}
                 checked={variant === option}
                 onChange={() => setVariant(option)}
+                aria-describedby="toast-variant"
               />
             ))}
           </div>
@@ -55,10 +72,10 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label} />
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            <Button>Pop Toast!</Button>
+            <Button type="submit">Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
